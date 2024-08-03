@@ -15,25 +15,7 @@ const db = new pg.Client({
     port: 5432,
 });
 
-const db1 = new pg.Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'user',
-    password: 'sha$123',
-    port: 5432,
-});
-
-const db2 = new pg.Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'user',
-    password: 'sha$123',
-    port: 5432,
-});
-
 db.connect();
-db1.connect();
-db2.connect();
 
 const groceryJSON =
 '[{"id":"1","p_name": "Apples","price": 160},{"id":"2","p_name": "Bananas","price": 140},{"id":"3","p_name": "Tomatoes","price": 65 },{"id":"4","p_name": "Lettuce","price": 78 },{"id":"5","p_name": "Onions","price": 54 },{"id":"6","p_name": "Potatoes","price": 49 },{"id":"7","p_name": "Eggs","price": 240 },{"id":"8","p_name": "Chicken breasts","price": 459 },{"id":"9","p_name": "Rice","price": 250 }]';
@@ -85,8 +67,8 @@ app.post("/review", async(req, res) => {
     try {
       const text = 'INSERT INTO customer(email, fullname, address) VALUES($1, $2, $3) RETURNING *';
       const values = [email, fullname, address];
-      const result = await db1.query(text, values);
-      let customerResult = await db1.query('SELECT c_id FROM customer WHERE email = $1', [email]);
+      const result = await db.query(text, values);
+      let customerResult = await db.query('SELECT c_id FROM customer WHERE email = $1', [email]);
       c_id = customerResult.rows[0].c_id;
       console.log(result.rows[0]); 
       res.render("finalreview.ejs", {item: arr});
@@ -102,7 +84,7 @@ app.post("/order", async (req, res) => {
         for (const item of arr) {
             const text = 'INSERT INTO order_items (c_id, p_name, price) VALUES ($1, $2, $3) RETURNING *';
             const values = [c_id, item.p_name, item.price];
-            const result = await db2.query(text, values);
+            const result = await db.query(text, values);
             console.log(result.rows[0]);
         }
         res.render("order.ejs");
