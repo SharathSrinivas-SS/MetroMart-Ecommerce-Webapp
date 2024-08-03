@@ -20,7 +20,7 @@
                   <p class="card-text">Apple - Red Delicious / Washington, Regular - 1kg</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="submit" value="Apples" name="choice" formmethod="post" formaction="/add"  class="button1 btn btn-sm btn-outline-secondary button1" onclick="myfunction()" >add to cart</button> 
+                      <button type="submit" value="Apples" name="choice" formmethod="post" formaction="/add"  class="button1 btn btn-sm btn-outline-secondary button1">add to cart</button> 
                     </div>
                     <small class="text-body-secondary">₹160</small>
                   </div>
@@ -145,20 +145,6 @@
         </form>
         </div>
       </div>  
-    
-      <script>
-        function myfunction() {
-          
-          document.querySelector(".button1").classList.toggle("mystyle");
-          var x = document.querySelector(".button1");
-          if (x.innerHTML === "add to cart") {
-              x.innerHTML = "added to cart";
-          } else {
-              x.innerHTML = "add to cart";
-          }
-        }
-      </script>
- 
 </body>
 <%- include("partials/footer.ejs") %>
 </html>

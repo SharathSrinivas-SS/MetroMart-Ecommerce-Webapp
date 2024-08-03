@@ -48,7 +48,6 @@ const arr = [];
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-
 app.get("/", (req, res) => {
     res.render("index.ejs");
 });
@@ -89,7 +88,7 @@ app.post("/review", async(req, res) => {
       const result = await db1.query(text, values);
       let customerResult = await db1.query('SELECT c_id FROM customer WHERE email = $1', [email]);
       c_id = customerResult.rows[0].c_id;
-      console.log(result.rows[0]); // Log the inserted row
+      console.log(result.rows[0]); 
       res.render("finalreview.ejs", {item: arr});
     } catch (err) {
       console.error(err);
@@ -101,18 +100,13 @@ app.post("/order", async (req, res) => {
     try {
         // Iterate over the array and insert each item into the database
         for (const item of arr) {
-            // SQL query with parameterized values to prevent SQL injection
             const text = 'INSERT INTO order_items (c_id, p_name, price) VALUES ($1, $2, $3) RETURNING *';
             const values = [c_id, item.p_name, item.price];
-            // Execute the query and wait for the result
             const result = await db2.query(text, values);
-            // Log the inserted row to the console
             console.log(result.rows[0]);
         }
-        // Render the final review page
         res.render("order.ejs");
     } catch (err) {
-        // Handle any errors that occur during the insertion process
         console.error('Error inserting data into database', err);
         res.status(500).send('Internal Server Error');
     }
@@ -295,11 +289,11 @@ app.post("/remove", (req, res) => {
     if (index === -1) {
       console.log('Product not found');
     } else {
-      arr.splice(index, 1); // Remove 1 element at the found index
+      arr.splice(index, 1); 
       res.redirect("/mycart"); 
     }
-  });
+});
 
 app.listen(port, () => {
-    console.log(`server is listening ${port}`);
+    console.log(`server is listening at port:${port}`);
 });
